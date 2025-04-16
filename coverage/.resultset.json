@@ -1,0 +1,481 @@
+{
+  "RSpec": {
+    "coverage": {
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/spec/models/customer_spec.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/customer_spec.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/spec/rails_helper.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/rails_helper.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          null,
+          1,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          0,
+          null,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+<<<<<<< HEAD
+          1,
+          1,
+          1,
+          1,
+          null,
+=======
+          null,
+          1,
+          1,
+          1,
+          1,
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/environment.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/environment.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          null,
+          1,
+          null,
+          null,
+          1
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/application.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/application.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          null,
+          1,
+          null,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          1,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/boot.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/boot.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          null,
+          1,
+          1
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/environments/test.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/environments/test.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          1,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/initializers/cors.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/initializers/cors.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/initializers/filter_parameter_logging.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/initializers/filter_parameter_logging.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/initializers/inflections.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/initializers/inflections.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/config/routes.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/config/routes.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          null,
+          null,
+          null,
+          null,
+          1,
+          null,
+          null,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/app/models/customer.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/customer.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          1,
+          null,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/app/models/application_record.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/application_record.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          1,
+          null
+        ]
+      },
+<<<<<<< HEAD
+      "/Users/katyaweicht/turing_work/2mod/little_shop/app/models/invoice.rb": {
+=======
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/invoice_item_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/invoice_item.rb": {
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+        "lines": [
+          1,
+          1,
+          1,
+<<<<<<< HEAD
+=======
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/invoice_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          2,
+          2,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/invoice.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/item_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/item.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/merchant_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/merchant.rb": {
+        "lines": [
+          1,
+          1,
+          1,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/spec/models/transaction_spec.rb": {
+        "lines": [
+          1,
+          1,
+          null,
+          1,
+          2,
+          null,
+          null
+        ]
+      },
+      "/Users/andrewsnyder/Desktop/turing_work/2mod/projects/little_shop/app/models/transaction.rb": {
+        "lines": [
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+          1,
+          1,
+          null
+        ]
+      }
+    },
+<<<<<<< HEAD
+    "timestamp": 1744834437
+=======
+    "timestamp": 1744836049
+>>>>>>> 502907dadbd4b8439435391be9bd9095e3172976
+  }
+}
