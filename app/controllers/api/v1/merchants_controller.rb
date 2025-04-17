@@ -6,24 +6,23 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def create
-    return render_missing_param(:name) if params[:name].blank?
+    merchant = Merchant.create!(merchant_params)
 
-    merchant = Merchant.new(merchant_params)
+    render json: MerchantSerializer.new(merchant), status: :created
+  end
 
-    if merchant.save
-      render json: MerchantSerializer.new(merchant), status: :created
-    else
-      render_error(
-        "your query could not be completed",
-        merchant.errors.full_messages
-      )
-    end
+  def update
+    merchant = Merchant.find(params[:id])
+
+    merchant.update(merchant_params)
+
+    render json: MerchantSerializer.new(merchant), status: :ok
   end
 
   private
 
     def merchant_params
-      params.permit(:name)
+      params.require(:merchant).permit(:name)
     end
 end
 
