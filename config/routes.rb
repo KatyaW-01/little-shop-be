@@ -12,4 +12,5 @@ Rails.application.routes.draw do
   get "/api/v1/items/:id", to: "api/v1/items#show"
   #relationship endpoints
   get "/api/v1/merchants/:id/items", to: "api/v1/merchant_items#index"
+  get "/api/v1/items/:id/merchant", to: "api/v1/item_merchants#show"
 end
