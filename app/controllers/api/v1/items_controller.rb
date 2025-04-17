@@ -4,17 +4,17 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def create
-    if params[:name].blank?
-      head :bad_request
-      return
-    end
-    
+    return render_missing_param(:name) if params[:name].blank?
+
     item = Item.new(item_params)
 
     if item.save
       render json: ItemSerializer.new(item), status: :created
     else
-      head :bad_request
+      render_error(
+        "your query could not be completed",
+        item.errors.full_messages
+      )
     end
   end
 

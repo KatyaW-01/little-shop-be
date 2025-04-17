@@ -6,23 +6,17 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def create
-    if params[:name].blank? # This can be made as a helper method after our error handling class
-      render json: {
-        message: "your query could not be completed",
-        errors: ["Missing required parameter: name"]
-      }, status: :bad_request
-      return
-    end
+    return render_missing_param(:name) if params[:name].blank?
 
     merchant = Merchant.new(merchant_params)
 
     if merchant.save
       render json: MerchantSerializer.new(merchant), status: :created
     else
-      render json: { # Same here, helper method would be more DRY
-        message: "your query could not be completed",
-        errors: merchant.errors.full_messages
-      }, status: :bad_request
+      render_error(
+        "your query could not be completed",
+        merchant.errors.full_messages
+      )
     end
   end
 
