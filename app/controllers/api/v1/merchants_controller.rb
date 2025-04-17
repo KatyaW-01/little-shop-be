@@ -6,6 +6,9 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def destroy
+    merchant = Merhcant.find(param[:id])
+    merchant.destroy
+    head :no_content
   end 
 end
 
