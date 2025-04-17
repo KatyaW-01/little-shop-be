@@ -8,5 +8,5 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "/api/v1/merchants", to: "api/v1/merchants#index"
-  delete "/api/v1/merchant/:id", to: "api/v1/merchant#destroy"
+  delete "/api/v1/merchants/:id", to: "api/v1/merchants#destroy"
 end
