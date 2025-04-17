@@ -53,4 +53,18 @@ describe "Merchant Item API", type: :request do
       expect(attributes[:merchant_id]).to be_an(Integer)
     end
   end
+
+  it "Will gracefully handle if it recieves an unknown merchant id" do
+    get "/api/v1/merchants/463739084757/items"
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+
+    data = JSON.parse(response.body, symbolize_names: true)
+
+    expect(data[:errors]).to be_a(Array)
+    expect(data[:errors].first[:status]).to eq("404")
+    expect(data[:errors].first[:message]).to eq("Couldn't find Merchant with 'id'=463739084757")
+  end
+
 end
