@@ -25,4 +25,18 @@ describe "Items API", type: :request do
     expect(attributes[:description]).to eq("A most excellent widget of the finest crafting")
     expect(attributes[:unit_price]).to eq(109.99)
   end
+
+  it "will gracefully handle if a item does not exist" do
+    get "/api/v1/items/173850383737"
+
+    expect(response).to_not be_successful
+    expect(response.status).to eq(404)
+
+    data = JSON.parse(response.body, symbolize_names: true)
+
+    expect(data[:errors]).to be_a(Array)
+    expect(data[:errors].first[:status]).to eq("404")
+    expect(data[:errors].first[:message]).to eq("Couldn't find Item with 'id'=173850383737")
+  end
+
 end
