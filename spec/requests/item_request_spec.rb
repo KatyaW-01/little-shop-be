@@ -1,7 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Item endpoints", type: :request do
-  describe 'destroy a item' do
+  describe 'destroy' do
     it 'deletes a item and returns not content' do
       merchant = Merchant.create!(name: "Test Merchant")
       item = merchant.items.create!(name: "Test Item", description: "Born to be deleted", unit_price: 10)
