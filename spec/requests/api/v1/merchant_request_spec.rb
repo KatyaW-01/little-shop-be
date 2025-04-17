@@ -17,4 +17,18 @@ describe "Merchants API", type: :request do
     expect(data[:type]).to eq("merchant")
     expect(attributes[:name]).to eq("Schroeder-Jerde")
   end
+
+  it "will gracefully handle if a merchant doesnt exist" do
+      get "/api/v1/merchants/1238384893930"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors].first[:status]).to eq("404")
+      expect(data[:errors].first[:message]).to eq("Couldn't find Song with 'id'=1238384893930")
+  end
+  
 end
