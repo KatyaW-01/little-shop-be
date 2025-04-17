@@ -6,9 +6,16 @@ class Api::V1::MerchantsController < ApplicationController
   end
 
   def destroy
-    merchant = Merhcant.find(param[:id])
-    merchant.destroy
-    head :no_content
+    merchant = Merhcant.find_by(id: params[:id])
+    
+    if merchant
+      merchant.destroy
+      head :no_content
+    else 
+      render json: {
+        message: "Unable to delete merchant",
+        errors: ["Merchant ID #{params[:id]} is invalid"],
+      }, status: :not_found
   end 
 end
 
