@@ -8,7 +8,7 @@ class Api::V1::MerchantsController < ApplicationController
   def create
     merchant = Merchant.create!(merchant_params)
 
-    render json: MerchantSerializer.new(merchant), status: :created
+    render json: MerchantSerializer.new(merchant)
   end
 
   def update
@@ -16,7 +16,7 @@ class Api::V1::MerchantsController < ApplicationController
 
     merchant.update(merchant_params)
 
-    render json: MerchantSerializer.new(merchant), status: :ok
+    render json: MerchantSerializer.new(merchant)
   end
 
   private

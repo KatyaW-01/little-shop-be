@@ -13,12 +13,15 @@ RSpec.describe "Items API", type: :request do
 
       post "/api/v1/items", params: { item: item_params }
 
-      expect(response).to have_http_status(:created)
+      expect(response).to be_successful
 
       json = JSON.parse(response.body, symbolize_names: true)
 
       expect(json[:data][:type]).to eq("item")
       expect(json[:data][:attributes][:name]).to eq("Toy Car")
+      expect(json[:data][:attributes][:description]).to eq("Red hot wheels toy")
+      expect(json[:data][:attributes][:unit_price]).to eq(9.99)
+      expect(json[:data][:attributes][:merchant_id]).to eq(merchant.id)
     end
 
     #Sad Path
@@ -51,11 +54,12 @@ RSpec.describe "Items API", type: :request do
         }
       }
   
-      expect(response).to have_http_status(:ok)
+      expect(response).to be_successful
   
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:data][:attributes][:name]).to eq("New Toy")
       expect(json[:data][:attributes][:unit_price]).to eq(6.49)
+      expect(json[:data][:attributes][:description]).to eq("New description")
     end
 
     # Sad Path
