@@ -20,6 +20,17 @@ RSpec.describe "Items API", type: :request do
       expect(json[:data][:type]).to eq("item")
       expect(json[:data][:attributes][:name]).to eq("Toy Car")
     end
+
+    #Sad Path
+    xit "returns 400 if any param is missing" do
+      post "/api/v1/items", params: { item: { name: "Incomplete" } }
+
+      expect(response.status).to eq(400)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to be_a(Array)
+    end
   end
 
   describe "PATCH /api/v1/items/:id" do
@@ -45,6 +56,18 @@ RSpec.describe "Items API", type: :request do
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:data][:attributes][:name]).to eq("New Toy")
       expect(json[:data][:attributes][:unit_price]).to eq(6.49)
+    end
+
+    # Sad Path
+    xit "returns 404 if item does not exist" do
+      patch "/api/v1/items/999999", params: {
+        item: { name: "Doesn't Matter" }
+      }
+
+      expect(response.status).to eq(404)
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to include("Could not find item with id: 999999")
     end
   end
 end
