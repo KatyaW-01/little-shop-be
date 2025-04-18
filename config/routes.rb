@@ -8,4 +8,9 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   # root "posts#index"
   get "/api/v1/merchants", to: "api/v1/merchants#index"
+  get "/api/v1/merchants/:id", to: "api/v1/merchants#show"
+  get "/api/v1/items/:id", to: "api/v1/items#show"
+  #relationship endpoints
+  get "/api/v1/merchants/:id/items", to: "api/v1/merchant_items#index"
+  get "/api/v1/items/:id/merchant", to: "api/v1/item_merchants#show"
 end
