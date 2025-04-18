@@ -34,9 +34,9 @@ describe "Items API", type: :request do
 
     data = JSON.parse(response.body, symbolize_names: true)
 
+    expect(data[:message]).to eq("your query could not be completed")
     expect(data[:errors]).to be_a(Array)
-    expect(data[:errors].first[:status]).to eq("404")
-    expect(data[:errors].first[:message]).to eq("Couldn't find Item with 'id'=173850383737")
+    expect(data[:errors]).to include("Couldn't find Item with 'id'=173850383737")
   end
 
 end
