@@ -11,4 +11,6 @@ class Merchant < ApplicationRecord
     .where(transactions: {result: "refunded" })
     .distinct
   end
+
+
 end
