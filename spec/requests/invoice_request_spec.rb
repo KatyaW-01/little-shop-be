@@ -32,18 +32,5 @@ RSpec.describe "Invoice endpoints", type: :request do
       data = JSON.parse(response.body, symbolize_names: true)[:data]
       expect(data).to eq([])
     end
-
-    xit 'returns a not_found error' do
-      delete "/api/v1/merchants/99999"
-
-      expect(response).to have_http_status(:not_found)
-
-      parsed_json = JSON.parse(response.body, symbolize_names: true)
-      errors = parsed_json[:errors].first
-
-      expect(parsed_json[:errors]).to be_an(Array)
-      expect(errors[:status]).to eq("404")
-      expect(errors[:message]).to include("Couldn't find Merchant with 'id'=99999")
-    end
   end
 end
