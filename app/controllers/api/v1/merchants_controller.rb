@@ -4,7 +4,25 @@ class Api::V1::MerchantsController < ApplicationController
     merchant = Merchant.all
     render json: MerchantSerializer.new(merchant)
   end
+  
+  def show
+    merchant = Merchant.find(params[:id])
+    render json: MerchantSerializer.new(merchant)
+  end
+  
+  def create
+    merchant = Merchant.create!(merchant_params)
+    render json: MerchantSerializer.new(merchant)
+  end
 
+  def update
+    merchant = Merchant.find(params[:id])
+
+    merchant.update(merchant_params)
+
+    render json: MerchantSerializer.new(merchant)
+  end
+  
   def destroy
     # begin
       merchant = Merchant.find(params[:id])
@@ -21,5 +39,10 @@ class Api::V1::MerchantsController < ApplicationController
     #   }, status: :not_found
     # end
   end 
-end
 
+  private
+
+    def merchant_params
+      params.require(:merchant).permit(:name)
+    end
+end
