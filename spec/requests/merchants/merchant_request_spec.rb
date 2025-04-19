@@ -1,8 +1,6 @@
-
 require "rails_helper"
 
 RSpec.describe "Merchant API", type: :request do
-  #happy path
   describe "GET /api/v1/merchants" do
     it "can fetch all merchants" do
       Merchant.create(name: "Merchant 1")
@@ -94,7 +92,7 @@ RSpec.describe "Merchant API", type: :request do
       expect(merchants_item_count[0][:attributes][:item_count]).to eq(3)
     end
   end
-
+  describe "GET /api/v1/merchants/merchant.id" do
     it 'can get one merchant by its id' do
       merchant = Merchant.create!(name: "Schroeder-Jerde")
 
@@ -124,5 +122,123 @@ RSpec.describe "Merchant API", type: :request do
         expect(data[:errors]).to be_a(Array)
         expect(data[:errors]).to include("Couldn't find Merchant with 'id'=1238384893930")
     end
+  end
+  describe "POST /api/v1/merchants" do
+    # Happy Path
+    it "creates a merchant with valid params" do
+      merchant_params = { name: "Toys R Us" }
+
+      post "/api/v1/merchants", params: { merchant: merchant_params }
+
+      expect(response).to have_http_status(:created)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json[:data][:type]).to eq("merchant")
+      expect(json[:data][:attributes][:name]).to eq("Toys R Us")
+    end
+
+    # Sad Path
+    xit "returns 400 if name param is missing" do
+      post "/api/v1/merchants", params: {}
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json[:errors]).to be_a(Array)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to include("Missing required parameter: name")
+    end
+
+    xit "returns 400 if name param is blank" do
+      post "/api/v1/merchants", params: { name: "" }
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json[:errors]).to be_a(Array)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to include("Missing required parameter: name")
+    end
+    
+  end
+
+  describe "PATCH /api/v1/merchants/:id" do
+    it "updates a merchant with valid params" do
+      merchant = Merchant.create!(name: "Old Name")
+  
+      patch "/api/v1/merchants/#{merchant.id}", params: { merchant: { name: "New Name" } }
+  
+      expect(response).to have_http_status(:ok)
+  
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:data][:attributes][:name]).to eq("New Name")
+    end
+
+    #Sad Path
+    xit "returns 404 if merchant does not exist" do
+      patch "/api/v1/merchants/999999", params: { merchant: { name: "Whatever" } }
+
+      expect(response.status).to eq(404)
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to include("Could not find merchant with id: 999999")
+    end
+  end
+  describe 'destroy' do
+    it 'deletes a merchant and returns not content' do
+      merchant = Merchant.create!(name: "Test Merchant")
+
+      delete "/api/v1/merchants/#{merchant.id}"
+
+      expect(response).to have_http_status(:no_content)
+      expect(Merchant.find_by(id: merchant.id)).to be_nil
+    end
+
+    xit 'returns a not_found error' do
+      delete "/api/v1/merchants/99999"
+
+      expect(response).to have_http_status(:not_found)
+
+      parsed_json = JSON.parse(response.body, symbolize_names: true)
+      errors = parsed_json[:errors].first
+
+      expect(parsed_json[:errors]).to be_an(Array)
+      expect(errors[:status]).to eq("404")
+      expect(errors[:message]).to include("Couldn't find Merchant with 'id'=99999")
+    end
+
+    it 'also deletes associated items and accosiated invoice item when merchant is deleted' do
+      merchant = Merchant.create!(name: "Test Cascading")
+     
+      item1 = merchant.items.create!(name: "Item 1", description: "Born to be deleted", unit_price: 10)
+      item2 = merchant.items.create!(name: "Item 2", description: "Second born to be deleted", unit_price: 20)
+      customer = Customer.create!(first_name: "Test", last_name: "Customer")
+      invoice = Invoice.create!(status: "shipped", customer_id: customer.id, merchant_id: merchant.id)
+      invoice_item = item1.invoice_items.create!(invoice: invoice, quantity: 5, unit_price: 100)
+      transaction = invoice.transactions.create!(credit_card_number: "1234567890123456", result: "success")
+
+      expect(Merchant.find_by(id: merchant.id)).to_not be_nil
+      expect(Invoice.find_by(id: invoice.id)).to_not be_nil
+      expect(Transaction.find_by(id: transaction.id)).to_not be_nil
+      expect(InvoiceItem.find_by(id: invoice_item.id)).to_not be_nil
+      expect(Item.find_by(id: item1.id)).to_not be_nil
+      expect(Item.find_by(id: item2.id)).to_not be_nil
+
+      delete "/api/v1/merchants/#{merchant.id}"
+
+      expect(response).to have_http_status(:no_content)
+      expect(Merchant.find_by(id: merchant.id)).to be_nil
+      expect(Invoice.find_by(id: invoice.id)).to be_nil
+      expect(Transaction.find_by(id: transaction.id)).to be_nil
+      expect(Item.find_by(id: item1.id)).to be_nil
+      expect(Item.find_by(id: item2.id)).to be_nil
+      expect(InvoiceItem.find_by(id: invoice_item.id)).to be_nil
+    end
+  end
 
 end
