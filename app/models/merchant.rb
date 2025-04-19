@@ -1,6 +1,7 @@
 class Merchant < ApplicationRecord
-  has_many :items
-  has_many :invoices
+
+  has_many :items, dependent: :destroy
+  has_many :invoices, dependent: :destroy
 
   def self.sorted_by_newest
     order(created_at: :desc)
@@ -22,4 +23,5 @@ class Merchant < ApplicationRecord
   def item_count
     self[:item_count] || items.size
   end
+
 end
