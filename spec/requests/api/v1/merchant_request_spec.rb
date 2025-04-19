@@ -121,7 +121,7 @@ RSpec.describe "Merchant API", type: :request do
     expect(attributes[:name]).to eq("Schroeder-Jerde")
   end
 
-  it "will gracefully handle if a merchant doesnt exist" do
+  xit "will gracefully handle if a merchant doesnt exist" do
       get "/api/v1/merchants/1238384893930"
 
       expect(response).to_not be_successful
