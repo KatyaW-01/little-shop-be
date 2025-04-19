@@ -11,15 +11,15 @@ RSpec.describe "Item API", type: :request do
       Item.create!(name: "Item 2", merchant: merchant1)
       Item.create!(name: "Item 3", merchant: merchant1)
   
-        get "/api/v1/items"
+      get "/api/v1/items"
   
-        expect(response).to be_successful
+      expect(response).to be_successful
   
-        json = JSON.parse(response.body, symbolize_names: true)
+      json = JSON.parse(response.body, symbolize_names: true)
   
-        expect(json[:data].count).to eq(3)
-        expect(json[:data].first[:type]).to eq("item")
-        expect(json[:data].first[:attributes]).to have_key(:name)
+      expect(json[:data].count).to eq(3)
+      expect(json[:data].first[:type]).to eq("item")
+      expect(json[:data].first[:attributes]).to have_key(:name)
     end
   end
   describe "GET /api/v1/items?sorted=price" do
