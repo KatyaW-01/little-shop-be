@@ -68,7 +68,7 @@ RSpec.describe "Item API", type: :request do
       expect(attributes[:unit_price]).to eq(109.99)
     end
 
-    xit "will gracefully handle if a item does not exist" do
+    it "will gracefully handle if a item does not exist" do
       get "/api/v1/items/173850383737"
 
       expect(response).to_not be_successful

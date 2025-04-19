@@ -1,5 +1,6 @@
 class Api::V1::MerchantsController < ApplicationController
-  
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+
   def index
     if params[:sorted] == "age"
       merchants = Merchant.sorted_by_newest
@@ -40,7 +41,12 @@ class Api::V1::MerchantsController < ApplicationController
 
   private
 
-    def merchant_params
-      params.require(:merchant).permit(:name)
-    end
+  def merchant_params
+    params.require(:merchant).permit(:name)
+  end
+
+  def not_found_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :not_found
+  end
+
 end

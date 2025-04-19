@@ -1,5 +1,6 @@
 class Api::V1::ItemsController < ApplicationController
-  
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+
   def index
     if params[:sorted] == "price"
       items = Item.sorted_by_price
@@ -36,8 +37,12 @@ class Api::V1::ItemsController < ApplicationController
   
   private
     
-    def item_params
-      params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
-    end
+  def item_params
+    params.require(:item).permit(:name, :description, :unit_price, :merchant_id)
+  end
+
+  def not_found_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :not_found
+  end
 
 end
