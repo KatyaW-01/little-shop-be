@@ -8,7 +8,7 @@ RSpec.describe "Merchants API", type: :request do
 
       post "/api/v1/merchants", params: { merchant: merchant_params }
 
-      expect(response).to have_http_status(:successful)
+      expect(response).to have_http_status(:created)
 
       json = JSON.parse(response.body, symbolize_names: true)
 
