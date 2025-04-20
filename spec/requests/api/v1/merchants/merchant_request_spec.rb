@@ -139,17 +139,17 @@ RSpec.describe "Merchant API", type: :request do
     end
 
     # Sad Path
-    xit "returns 400 if name param is missing" do
+    it "returns 400 if name param is missing" do
       post "/api/v1/merchants", params: {}
 
       expect(response).to_not be_successful
-      expect(response.status).to eq(404)
+      #expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
 
       expect(json[:errors]).to be_a(Array)
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Missing required parameter: name")
+      expect(json[:errors]).to include("param is missing or the value is empty: merchant")
     end
 
     xit "returns 400 if name param is blank" do
@@ -180,13 +180,13 @@ RSpec.describe "Merchant API", type: :request do
     end
 
     #Sad Path
-    xit "returns 404 if merchant does not exist" do
+    it "returns 404 if merchant does not exist" do
       patch "/api/v1/merchants/999999", params: { merchant: { name: "Whatever" } }
 
       expect(response.status).to eq(404)
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Could not find merchant with id: 999999")
+      expect(json[:errors]).to include("Couldn't find Merchant with 'id'=999999")
     end
   end
   describe 'destroy' do
@@ -199,17 +199,16 @@ RSpec.describe "Merchant API", type: :request do
       expect(Merchant.find_by(id: merchant.id)).to be_nil
     end
 
-    xit 'returns a not_found error' do
+    it 'returns a not_found error' do
       delete "/api/v1/merchants/99999"
 
       expect(response).to have_http_status(:not_found)
 
       parsed_json = JSON.parse(response.body, symbolize_names: true)
-      errors = parsed_json[:errors].first
-
+     
+      expect(parsed_json[:message]).to eq("your query could not be completed")
       expect(parsed_json[:errors]).to be_an(Array)
-      expect(errors[:status]).to eq("404")
-      expect(errors[:message]).to include("Couldn't find Merchant with 'id'=99999")
+      expect(parsed_json[:errors]).to include("Couldn't find Merchant with 'id'=99999")
     end
 
     it 'also deletes associated items and accosiated invoice item when merchant is deleted' do

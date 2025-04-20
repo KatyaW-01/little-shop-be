@@ -1,5 +1,6 @@
 class Api::V1::MerchantsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+  rescue_from ActionController::ParameterMissing, with: :incomplete_response
 
   def index
     if params[:sorted] == "age"
@@ -47,6 +48,10 @@ class Api::V1::MerchantsController < ApplicationController
 
   def not_found_response(exception)
     render json: ErrorSerializer.serialize(exception), status: :not_found
+  end
+
+  def incomplete_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
   end
 
 end
