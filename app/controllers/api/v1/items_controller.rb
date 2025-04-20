@@ -1,6 +1,8 @@
 class Api::V1::ItemsController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
   rescue_from ActiveRecord::RecordInvalid, with: :incomplete_response
+  rescue_from ActionController::ParameterMissing, with: :missing_param_response
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :malformed_json_response
 
   def index
     if params[:sorted] == "price"
@@ -50,4 +52,11 @@ class Api::V1::ItemsController < ApplicationController
     render json: ErrorSerializer.serialize(exception), status: :bad_request
   end
 
+  def missing_param_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
+  end
+
+  def malformed_json_response(exception)
+    render json: ErrorSerializer.serialize("Malformed or missing JSON body"), status: :bad_request
+  end
 end
