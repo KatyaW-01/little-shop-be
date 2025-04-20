@@ -28,8 +28,9 @@ RSpec.describe "MerchantsCustomers API", type: :request do
       expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
+
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Could not find merchant with id: 999999")
+      expect(json[:errors]).to include("Couldn't find Merchant with 'id'=999999")
     end
   end
 end

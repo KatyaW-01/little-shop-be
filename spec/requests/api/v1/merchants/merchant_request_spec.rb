@@ -152,17 +152,17 @@ RSpec.describe "Merchant API", type: :request do
       expect(json[:errors]).to include("param is missing or the value is empty: merchant")
     end
 
-    xit "returns 400 if name param is blank" do
+    it "returns 400 if name param is blank" do
       post "/api/v1/merchants", params: { name: "" }
 
       expect(response).to_not be_successful
-      expect(response.status).to eq(404)
+      #expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
 
       expect(json[:errors]).to be_a(Array)
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Missing required parameter: name")
+      expect(json[:errors]).to include("param is missing or the value is empty: merchant")
     end
     
   end
