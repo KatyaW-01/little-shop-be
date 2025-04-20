@@ -193,7 +193,7 @@ RSpec.describe "Item API", type: :request do
     end
 
     # Sad Path
-    xit "returns 404 if item does not exist" do
+    it "returns 404 if item does not exist" do
       patch "/api/v1/items/999999", params: {
         item: { name: "Doesn't Matter" }
       }
@@ -201,7 +201,7 @@ RSpec.describe "Item API", type: :request do
       expect(response.status).to eq(404)
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Could not find item with id: 999999")
+      expect(json[:errors]).to include("Couldn't find Item with 'id'=999999")
     end
   end
   
