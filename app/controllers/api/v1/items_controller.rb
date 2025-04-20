@@ -57,6 +57,6 @@ class Api::V1::ItemsController < ApplicationController
   end
 
   def malformed_json_response(exception)
-    render json: ErrorSerializer.serialize("Malformed or missing JSON body"), status: :bad_request
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
   end
 end
