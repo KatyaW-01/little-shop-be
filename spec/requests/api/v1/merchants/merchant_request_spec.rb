@@ -124,7 +124,6 @@ RSpec.describe "Merchant API", type: :request do
     end
   end
   describe "POST /api/v1/merchants" do
-    # Happy Path
     it "creates a merchant with valid params" do
       merchant_params = { name: "Toys R Us" }
 
@@ -138,7 +137,6 @@ RSpec.describe "Merchant API", type: :request do
       expect(json[:data][:attributes][:name]).to eq("Toys R Us")
     end
 
-    # Sad Path
     it "returns 400 if name param is missing" do
       post "/api/v1/merchants", params: {}
 
@@ -179,7 +177,6 @@ RSpec.describe "Merchant API", type: :request do
       expect(json[:data][:attributes][:name]).to eq("New Name")
     end
 
-    #Sad Path
     it "returns 404 if merchant does not exist" do
       patch "/api/v1/merchants/999999", params: { merchant: { name: "Whatever" } }
 

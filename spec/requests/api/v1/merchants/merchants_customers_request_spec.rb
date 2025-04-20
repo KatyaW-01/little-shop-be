@@ -21,8 +21,7 @@ RSpec.describe "MerchantsCustomers API", type: :request do
       expect(json[:data].first[:attributes]).to have_key(:last_name)
     end
 
-    # Sad Path
-    xit "returns 404 if merchant not found" do
+    it "returns 404 if merchant not found" do
       get "/api/v1/merchants/999999/customers"
 
       expect(response.status).to eq(404)
