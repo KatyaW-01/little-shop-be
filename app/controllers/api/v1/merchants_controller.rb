@@ -1,5 +1,9 @@
 class Api::V1::MerchantsController < ApplicationController
-  
+  rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
+  rescue_from ActionController::ParameterMissing, with: :incomplete_response
+  rescue_from ActiveRecord::RecordInvalid, with: :incomplete_response
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :malformed_json_response
+
   def index
     if params[:sorted] == "age"
       merchants = Merchant.sorted_by_newest
@@ -23,37 +27,37 @@ class Api::V1::MerchantsController < ApplicationController
   
   def create
     merchant = Merchant.create!(merchant_params)
-    render json: MerchantSerializer.new(merchant)
+    render json: MerchantSerializer.new(merchant), status: :created
   end
 
   def update
     merchant = Merchant.find(params[:id])
-
     merchant.update(merchant_params)
-
     render json: MerchantSerializer.new(merchant)
   end
   
   def destroy
-    # begin
       merchant = Merchant.find(params[:id])
       merchant.destroy
       head :no_content
-    # rescue ActiveRecord::RecordNotFound => error
-    #   render json: {
-    #     "errors": [
-    #       {
-    #       status: "404",
-    #       message: [error.message]
-    #       }
-    #     ]
-    #   }, status: :not_found
-    # end
   end 
 
   private
 
-    def merchant_params
-      params.require(:merchant).permit(:name)
-    end
+  def merchant_params
+    params.require(:merchant).permit(:name)
+  end
+
+  def not_found_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :not_found
+  end
+
+  def incomplete_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
+  end
+
+  def malformed_json_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
+  end
+
 end

@@ -22,14 +22,16 @@ RSpec.describe "MerchantsCustomers API", type: :request do
     end
 
     # Sad Path
-    xit "returns 404 if merchant not found" do
+
+    it "returns 404 if merchant not found" do
       get "/api/v1/merchants/999999/customers"
 
       expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
+
       expect(json[:message]).to eq("your query could not be completed")
-      expect(json[:errors]).to include("Could not find merchant with id: 999999")
+      expect(json[:errors]).to include("Couldn't find Merchant with 'id'=999999")
     end
   end
 end
