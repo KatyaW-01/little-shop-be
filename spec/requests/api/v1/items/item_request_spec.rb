@@ -7,9 +7,9 @@ RSpec.describe "Item API", type: :request do
     it "can fetch all items" do
       merchant1 = Merchant.create!(name: "Merchant One")
     
-      Item.create!(name: "Item 1", merchant: merchant1)
-      Item.create!(name: "Item 2", merchant: merchant1)
-      Item.create!(name: "Item 3", merchant: merchant1)
+      Item.create!(name: "Item 1", description: "Description for item 1", unit_price: 15.99, merchant_id: merchant1.id)
+      Item.create!(name: "Item 2", description: "Description for item 2", unit_price: 25.50, merchant_id: merchant1.id)
+      Item.create!(name: "Item 3", description: "Description for item 3", unit_price: 10.00, merchant_id: merchant1.id)
   
       get "/api/v1/items"
   
@@ -26,9 +26,9 @@ RSpec.describe "Item API", type: :request do
     it "can sort all items by price" do
       merchant = Merchant.create!(name: "Alfanzo")
 
-      item1 = Item.create!(name: "Item Nemo Facere", unit_price: 42.91, merchant: merchant)
-      item2 = Item.create!(name: "Item Provident At", unit_price: 159.25, merchant: merchant)
-      item3 = Item.create!(name: "Item Expedita Aliquam", unit_price: 687.23, merchant: merchant)
+      item1 = Item.create!(name: "Item Nemo Facere", description: "Description for item 1", unit_price: 42.91, merchant: merchant)
+      item2 = Item.create!(name: "Item Provident At", description: "Description for item 2", unit_price: 159.25, merchant: merchant)
+      item3 = Item.create!(name: "Item Expedita Aliquam", description: "Description for item 3", unit_price: 687.23, merchant: merchant)
       
 
       get "/api/v1/items?sorted=price"
