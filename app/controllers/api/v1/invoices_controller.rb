@@ -1,4 +1,6 @@
 class Api::V1::InvoicesController < ApplicationController
+  VALID_STATUSES = ["shipped", "returned", "packaged"]
+  
   def index
     status = params[:status] #grabs the value of the status query parameter - shipped, packaged, returned
     merchant = Merchant.find(params[:merchant_id]) #looks up merchant with given merchant id frome the URL

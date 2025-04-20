@@ -33,18 +33,17 @@ RSpec.describe "Invoice endpoints", type: :request do
       expect(data).to eq([])
     end
 
-    xit 'returns a bad_request error for invalid status query' do
+    it 'returns a bad_request error for invalid status query' do
       merchant = Merchant.create!(name: "Test Merchant")
 
       get "/api/v1/merchants/#{merchant.id}/invoices?status=invalid_status"
 
-      expect(response).to have_http_status(:bad_request)
+      expect(response.status).to eq(400)
 
       parsed_json = JSON.parse(response.body, symbolize_names: true)
       errors = parsed_json[:errors]
 
       expect(errors).to be_an(Array)
-      expect(errors[:status]).to eq("400")
       expect(parsed_json[:message]).to eq("your query could not be completed")
       expect(errors).to include("Invalid status. Must be one of: shipped, returned, packaged")
     end
