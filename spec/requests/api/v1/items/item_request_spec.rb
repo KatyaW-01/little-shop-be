@@ -92,17 +92,16 @@ RSpec.describe "Item API", type: :request do
       expect(Item.find_by(id: item.id)).to be_nil
     end
 
-    xit 'returns a not_found error' do
+    it 'returns a not_found error' do
       delete "/api/v1/items/99999"
 
-      expect(response).to have_http_status(:not_found)
+      expect(response).to_not be_successful
 
       parsed_json = JSON.parse(response.body, symbolize_names: true)
-      errors = parsed_json[:errors].first
 
+      expect(parsed_json[:message]).to eq("your query could not be completed")
       expect(parsed_json[:errors]).to be_an(Array)
-      expect(errors[:status]).to eq("404")
-      expect(errors[:message]).to include("Couldn't find Item with 'id'=99999")
+      expect(parsed_json[:errors]).to include("Couldn't find Item with 'id'=99999")
     end
 
     it 'also deletes associated items and accosiated invoice item when merchant is deleted' do 
@@ -156,7 +155,7 @@ RSpec.describe "Item API", type: :request do
     end
 
     #Sad Path
-    xit "returns 400 if any param is missing" do
+    it "returns 400 if any param is missing" do #postman doesnt give errors if params are missing 
       post "/api/v1/items", params: { item: { name: "Incomplete" } }
 
       expect(response.status).to eq(400)
