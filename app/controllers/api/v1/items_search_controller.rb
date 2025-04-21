@@ -1,6 +1,7 @@
 class Api::V1::ItemsSearchController < ApplicationController
-  rescue_from ActionController::ParameterMissing, with: :missing_param_response
+  rescue_from ActionController::ParameterMissing, with: :incomplete_response
   rescue_from ArgumentError, with: :incomplete_response
+  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :malformed_json_response
 
   def find
     validate_single_param_set!
@@ -30,7 +31,7 @@ class Api::V1::ItemsSearchController < ApplicationController
 
     def validate_price_range!
       if params[:min_price].present? && params[:min_price].to_f < 0
-        raise ArgumentError, "min_price must be a non_negative value"
+        raise ArgumentError, "min_price must be a non-negative value"
       end
 
       if params[:max_price].present? && params[:max_price].to_f < 0
@@ -38,11 +39,11 @@ class Api::V1::ItemsSearchController < ApplicationController
       end
     end
 
-    def missing_param_response(error)
-      render json: ErrorSerializer.serialize(error), status: :bad_request
+    def incomplete_response(exception)
+      render json: ErrorSerializer.serialize(exception), status: :bad_request
     end
 
-    def incomplete_response(error)
-      render json: ErrorSerializer.serialize(error), status: :bad_request
+    def malformed_json_response(exception)
+      render json: ErrorSerializer.serialize(exception), status: :bad_request
     end
 end
