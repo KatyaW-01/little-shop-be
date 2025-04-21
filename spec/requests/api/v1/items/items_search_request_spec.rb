@@ -26,6 +26,22 @@ RSpec.describe "Item Search API", type: :request do
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:data][:attributes][:name]).to eq("Gold Ring")
     end
+
+    it "returns one item at max price" do
+      get "/api/v1/items/find?max_price=100"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:data][:attributes][:name]).to eq("Wooden Spoon")
+    end
+
+    it "returns one item at min price" do
+      get "/api/v1/items/find?min_price=175"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:data][:attributes][:name]).to eq("Gold Ring")
+    end
   end
 
   describe "Sad Path - GET /api/v1/items/find" do
@@ -73,6 +89,22 @@ RSpec.describe "Item Search API", type: :request do
       expect(response).to be_successful
       json = JSON.parse(response.body, symbolize_names: true)
       expect(json[:data].count).to eq(2)
+    end
+
+    it "returns items above the given minimum price" do
+      get "/api/v1/items/find_all?min_price=100"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:data].count).to eq(2)
+    end
+
+    it "returns items below the given max price" do
+      get "/api/v1/items/find_all?max_price=100"
+
+      expect(response).to be_successful
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:data].count).to eq(1)
     end
 
     it "returns an empty array if no match" do
