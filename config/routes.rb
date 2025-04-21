@@ -7,6 +7,8 @@ Rails.application.routes.draw do
 
   # Defines the root path route ("/")
   # root "posts#index"
+  #non RESTful endpoints
+  get "/api/v1/merchants/find", to: "api/v1/merchants#find"
   # Merchant Endpoints
   get "/api/v1/merchants", to: "api/v1/merchants#index"
   get "/api/v1/items", to: "api/v1/items#index"
@@ -27,7 +29,7 @@ Rails.application.routes.draw do
   get "/api/v1/merchants/:id/items", to: "api/v1/merchant_items#index"
   get "/api/v1/items/:id/merchant", to: "api/v1/item_merchants#show"
   get "/api/v1/merchants/:merchant_id/invoices", to: "api/v1/invoices#index"
-  
-  #MerchantsCustomers
   get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants_customers#index"
+
+ 
 end
