@@ -54,4 +54,9 @@ RSpec.describe Merchant, type: :model do
       expect(final_transaction_count).to eq(initial_transaction_count -1)
     end
   end
+  describe 'filter by name' do
+    it 'can filter merchants by name query' do
+      
+    end
+  end
 end
