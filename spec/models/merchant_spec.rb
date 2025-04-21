@@ -62,9 +62,23 @@ RSpec.describe Merchant, type: :model do
 
       result = Merchant.filter_name("Zem")
       expect(result).to eq(merchant2)
-      
+
       no_result = Merchant.filter_name("xxx")
       expect(no_result).to eq(nil)
     end
+  end
+  describe 'sort by newest' do
+    it 'can sort by the created_at date in descending order' do
+      merchant1 = Merchant.create!(name: "Johnson Inc",created_at: "2024-04-21 14:53:30" )
+      merchant2 = Merchant.create!(name: "Zemlak-Collins",created_at: "2024-04-21 14:53:42")
+      merchant3 = Merchant.create!(name: "Pollich, Romaguera and Bayer",created_at: "2024-04-21 14:53:59")
+
+      results = Merchant.where(id: [merchant1.id, merchant2.id, merchant3.id]).sorted_by_newest
+      expect(results.first).to eq(merchant3)
+      expect(results.last).to eq(merchant1)
+    end
+  end
+  describe 'returned items' do
+    
   end
 end
