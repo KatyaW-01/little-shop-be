@@ -1,15 +1,17 @@
 class Api::V1::ItemsSearchController < ApplicationController
-  resuce_from ActionController::ParameterMissing, with: :missing_param_response
-  resuce_from ArgumentError, with: :incomplete_response
+  rescue_from ActionController::ParameterMissing, with: :missing_param_response
+  rescue_from ArgumentError, with: :incomplete_response
 
   def find
     validate_single_param_set!
+    validate_price_range!
     item = Item.find_by_search(params)
     render json: ItemSerializer.new(item)
   end
 
   def find_all
     validate_single_param_set!
+    validate_price_range!
     items = Item.find_all_by_search(params)
     render json: ItemSerializer.new(items)
   end
@@ -23,6 +25,16 @@ class Api::V1::ItemsSearchController < ApplicationController
 
       if params[:name].blank? && params[:min_price].blank? && params[:max_price].blank?
         raise ActionController::ParameterMissing, "name or price range"
+      end
+    end
+
+    def validate_price_range!
+      if params[:min_price].present? && params[:min_price].to_f < 0
+        raise ArgumentError, "min_price must be a non_negative value"
+      end
+
+      if params[:max_price].present? && params[:max_price].to_f < 0
+        raise ArgumentError, "max_price must be a non-negative value"
       end
     end
 
