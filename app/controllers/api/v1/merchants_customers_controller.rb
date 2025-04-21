@@ -2,7 +2,7 @@ class Api::V1::MerchantsCustomersController < ApplicationController
   rescue_from ActiveRecord::RecordNotFound, with: :not_found_response
   def index
     merchant = Merchant.find(params[:merchant_id])
-    customers = Customer.for_merchant(merchant.id).limit(50)
+    customers = Customer.for_merchant(merchant.id)
     # binding.pry
     render json: CustomerSerializer.new(customers)
   end
