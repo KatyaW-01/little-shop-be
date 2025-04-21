@@ -25,4 +25,8 @@ class Merchant < ApplicationRecord
     self[:item_count] || items.size
   end
 
+  def self.filter_name(name)
+    where("LOWER(name) LIKE?", "%#{name.downcase}%").order("LOWER(name) ASC").first
+  end
+
 end
