@@ -236,5 +236,40 @@ RSpec.describe "Merchant API", type: :request do
       expect(InvoiceItem.find_by(id: invoice_item.id)).to be_nil
     end
   end
+  describe 'find one merchant' do
+    it 'can find a merchant when given a name paramater' do
+      merchant1 = Merchant.create!(name: "Johnson Inc")
+      merchant2 = Merchant.create!(name: "Zemlak-Collins")
+      merchant3 = Merchant.create!(name: "Pollich, Romaguera and Bayer")
+
+      get "/api/v1/merchants/find?name=lak"
+
+      expect(response).to be_successful
+
+      merchant = JSON.parse(response.body, symbolize_names: true)
+
+      merchant_data = merchant[:data]
+      expect(merchant).to have_key(:data)
+      expect(merchant_data).to be_a(Hash)
+      expect(merchant_data).to have_key(:attributes)
+      merchant_attributes = merchant_data[:attributes]
+      expect(merchant_attributes[:name]).to eq("Zemlak-Collins")
+    end
+    it 'returns an empty hash if no merchants are found' do
+      merchant1 = Merchant.create!(name: "Johnson Inc")
+      merchant2 = Merchant.create!(name: "Zemlak-Collins")
+      merchant3 = Merchant.create!(name: "Pollich, Romaguera and Bayer")
+
+      get "/api/v1/merchants/find?name=bim"
+
+      expect(response).to be_successful
+
+      merchant = JSON.parse(response.body, symbolize_names: true)
+
+      merchant_data = merchant[:data]
+      expect(merchant).to have_key(:data)
+      expect(merchant_data).to include({})
+    end
+  end
 
 end
