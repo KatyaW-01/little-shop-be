@@ -56,7 +56,15 @@ RSpec.describe Merchant, type: :model do
   end
   describe 'filter by name' do
     it 'can filter merchants by name query' do
+      merchant1 = Merchant.create!(name: "Johnson Inc")
+      merchant2 = Merchant.create!(name: "Zemlak-Collins")
+      merchant3 = Merchant.create!(name: "Pollich, Romaguera and Bayer")
+
+      result = Merchant.filter_name("Zem")
+      expect(result).to eq(merchant2)
       
+      no_result = Merchant.filter_name("xxx")
+      expect(no_result).to eq(nil)
     end
   end
 end
