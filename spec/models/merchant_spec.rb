@@ -79,6 +79,42 @@ RSpec.describe Merchant, type: :model do
     end
   end
   describe 'returned items' do
-    
+    it 'can join invoices and transactions' do
+      merchant_with_refund_1 = Merchant.create!(name: 'Refund Merchant One')
+      customer1 = Customer.create!(first_name: "mike", last_name: "jones")
+      invoice_one = Invoice.create!(merchant_id: merchant_with_refund_1.id, status: "returned", customer_id: customer1.id )
+      Transaction.create!(invoice_id: invoice_one.id, result: 'refunded')
+
+      results = Merchant.with_returned_items
+      expect(results).to include(merchant_with_refund_1)
+    end
+  end
+  describe 'with item counts' do
+    it 'adds item count attribute to merchants' do
+      merchant1 = Merchant.create!(name: "Merchant One")
+  
+      Item.create!(name: "Item 1", description: "banana", unit_price: 58.78, merchant_id: merchant1.id)
+      Item.create!(name: "Item 2", description: "cat", unit_price: 999.78, merchant_id: merchant1.id)
+      Item.create!(name: "Item 3", description: "moose", unit_price: 85.78, merchant_id: merchant1.id)
+      
+      results = Merchant.where(id: [merchant1.id]).with_item_counts
+   
+      expect(results[0][:item_count]).to eq(3)
+    end
+  end
+  describe 'item count' do
+    it 'it can count a merchants items' do
+      merchant1 = Merchant.create!(name: "Merchant One")
+  
+      Item.create!(name: "Item 1", description: "banana", unit_price: 58.78, merchant_id: merchant1.id)
+      Item.create!(name: "Item 2", description: "cat", unit_price: 999.78, merchant_id: merchant1.id)
+      Item.create!(name: "Item 3", description: "moose", unit_price: 85.78, merchant_id: merchant1.id)
+
+      results = merchant1.item_count
+      expect(results).to eq(3)
+      expect(merchant1.items.size).to eq(3)
+      expect(results).to eq(merchant1.items.size)
+
+    end
   end
 end
