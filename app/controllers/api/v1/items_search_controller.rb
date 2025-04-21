@@ -3,13 +3,13 @@ class Api::V1::ItemsSearchController < ApplicationController
   resuce_from ArgumentError, with: :incomplete_response
 
   def find
-    # validate_single_param_set!
+    validate_single_param_set!
     item = Item.find_by_search(params)
     render json: ItemSerializer.new(item)
   end
 
   def find_all
-    # validate_single_param_set!
+    validate_single_param_set!
     items = Item.find_all_by_search(params)
     render json: ItemSerializer.new(items)
   end
