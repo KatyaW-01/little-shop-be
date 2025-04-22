@@ -154,9 +154,20 @@ RSpec.describe "Item API", type: :request do
       expect(json[:data][:attributes][:merchant_id]).to eq(merchant.id)
     end
 
-    #Sad Path
-    it "returns 400 if any param is missing" do #postman doesnt give errors if params are missing 
+    it "returns 400 if any param is missing" do 
       post "/api/v1/items", params: { item: { name: "Incomplete" } }
+
+      expect(response.status).to eq(400)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to be_a(Array)
+    end
+
+    it "returns 400 if any param is missing" do 
+      headers = { "CONTENT_TYPE" => "application/json" }
+      bad_json = '{ "item": { "name": } }'
+      post "/api/v1/items", headers: headers,params: bad_json 
 
       expect(response.status).to eq(400)
 
@@ -192,7 +203,6 @@ RSpec.describe "Item API", type: :request do
       expect(json[:data][:attributes][:description]).to eq("New description")
     end
 
-    # Sad Path
     it "returns 404 if item does not exist" do
       patch "/api/v1/items/999999", params: {
         item: { name: "Doesn't Matter" }

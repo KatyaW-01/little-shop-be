@@ -1,7 +1,6 @@
 class Api::V1::ItemsSearchController < ApplicationController
   rescue_from ActionController::ParameterMissing, with: :incomplete_response
   rescue_from ArgumentError, with: :incomplete_response
-  rescue_from ActionDispatch::Http::Parameters::ParseError, with: :malformed_json_response
 
   def find
     validate_single_param_set!
@@ -43,7 +42,4 @@ class Api::V1::ItemsSearchController < ApplicationController
       render json: ErrorSerializer.serialize(exception), status: :bad_request
     end
 
-    def malformed_json_response(exception)
-      render json: ErrorSerializer.serialize(exception), status: :bad_request
-    end
 end

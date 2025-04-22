@@ -8,7 +8,6 @@ RSpec.describe "Item Search API", type: :request do
     @item3 = Item.create!(name: "Wooden Spoon", description: "Not shiny", unit_price: 10, merchant: @merchant)
   end
 
-  # Happy Path
   describe "Happy Path GET /api/v1/items/find" do
     it "returns one item matching the name fragment" do
       get "/api/v1/items/find?name=ring"

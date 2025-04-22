@@ -185,6 +185,23 @@ RSpec.describe "Merchant API", type: :request do
       expect(json[:message]).to eq("your query could not be completed")
       expect(json[:errors]).to include("Couldn't find Merchant with 'id'=999999")
     end
+
+    it 'returns 400 if parameters not included' do
+      merchant = Merchant.create!(name: "Old Name")
+      headers = { "CONTENT_TYPE" => "application/json" }
+      bad_json = '{ "merchant": { "name": } }'
+
+      patch "/api/v1/merchants/#{merchant.id}", headers: headers, params: bad_json
+
+      expect(response.status).to eq(400)
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      expect(json[:message]).to eq("your query could not be completed")
+      expect(json[:errors]).to be_a(Array)
+      expect(json[:errors]).to include("Error occurred while parsing request parameters")
+    end
+    
   end
   describe 'destroy' do
     it 'deletes a merchant and returns not content' do
