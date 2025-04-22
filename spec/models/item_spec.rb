@@ -50,18 +50,33 @@ RSpec.describe Item, type: :model do
     end
 
     it "find a single item by min and max price" do
-      result = Item.find_by_search({ min_price: "100", max_price: "200" })
-      expect(result).to eq(@item2) # Alphabetical sorting also
+      result = Item.find_by_search({ min_price: 100, max_price: 200 })
+      expect(result).to eq(@item1)
     end
 
     it "finds a single item by min price only" do
-      result = Item.find_by_search({ min_price: "160" })
+      result = Item.find_by_search({ min_price: 160 })
       expect(result).to eq(@item1)
     end
 
     it "finds a single item by max price only" do
-      result = Item.find_by_search({ max_price: "20" })
+      result = Item.find_by_search({ max_price: 20 })
       expect(result).to eq(@item3)
+    end
+
+    it "returns nothing if the params do not match anything" do
+      result = Item.find_by_search({ min_price: 300 })
+      result1 = Item.find_by_search({ max_price: 5 })
+      result2 = Item.find_by_search({ min_price: 300 })
+      result3 = Item.find_by_search({ min_price: 175, max_price: 195 })
+      result4 = Item.find_by_search({ name: "wrong" })
+
+
+      expect(result).to eq(nil)
+      expect(result1).to eq(nil)
+      expect(result2).to eq(nil)
+      expect(result3).to eq(nil)
+      expect(result4).to eq(nil)
     end
   end
 
@@ -73,6 +88,39 @@ RSpec.describe Item, type: :model do
       @item3 = Item.create!(name: "Wooden Spoon", description: "Not shiny", unit_price: 10, merchant: @merchant)
     end
 
-    
+    it "finds all items by name fragment" do
+      result = Item.find_all_by_search({ name: "ring" })
+      expect(result).to eq([@item1, @item2])
+    end
+
+    it "returns all items within price range in alphabetical order" do
+      result = Item.find_all_by_search({ min_price: 100, max_price: 300 })
+      expect(result).to eq([@item1, @item2])
+    end
+
+    it "returns all items with min price in alphabetical order" do
+      result = Item.find_all_by_search({ min_price: 150 })
+      expect(result).to eq([@item1, @item2])
+    end
+
+    it "returns all items with max price in alphabetical order" do
+      result = Item.find_all_by_search({ max_price: 10 })
+      expect(result).to eq([@item3])
+    end
+
+    it "returns no items when nothing matches the provded params" do
+      result = Item.find_all_by_search({ min_price: 300 })
+      result1 = Item.find_all_by_search({ max_price: 5 })
+      result2 = Item.find_all_by_search({ min_price: 300 })
+      result3 = Item.find_all_by_search({ min_price: 175, max_price: 195 })
+      result4 = Item.find_all_by_search({ name: "wrong" })
+
+
+      expect(result).to eq([])
+      expect(result1).to eq([])
+      expect(result2).to eq([])
+      expect(result3).to eq([])
+      expect(result4).to eq([])
+    end
   end
 end
