@@ -43,14 +43,15 @@ class Api::V1::MerchantsController < ApplicationController
   end 
 
   def find
-    if params[:name]
-      merchant = Merchant.filter_name(params[:name])
-      if merchant
-        render json: MerchantSerializer.new(merchant)
-      else
-        render json: {data: {} }, status: :ok
-      end
-      
+    if params[:name].blank?
+      raise ActionController::ParameterMissing, :name
+    end
+
+    merchant = Merchant.filter_name(params[:name])
+    if merchant
+      render json: MerchantSerializer.new(merchant)
+    else
+      render json: {data: {} }, status: :ok
     end
   end
 

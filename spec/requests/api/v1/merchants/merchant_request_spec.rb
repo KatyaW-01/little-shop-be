@@ -141,7 +141,6 @@ RSpec.describe "Merchant API", type: :request do
       post "/api/v1/merchants", params: {}
 
       expect(response).to_not be_successful
-      #expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
 
@@ -154,7 +153,6 @@ RSpec.describe "Merchant API", type: :request do
       post "/api/v1/merchants", params: { name: "" }
 
       expect(response).to_not be_successful
-      #expect(response.status).to eq(404)
 
       json = JSON.parse(response.body, symbolize_names: true)
 
@@ -286,6 +284,17 @@ RSpec.describe "Merchant API", type: :request do
       merchant_data = merchant[:data]
       expect(merchant).to have_key(:data)
       expect(merchant_data).to include({})
+    end
+    it 'gracefully handles if no param is given' do
+      get "/api/v1/merchants/find"
+
+      expect(response).to_not be_successful
+      expect(response).to have_http_status(:bad_request)
+
+      parsed_json = JSON.parse(response.body, symbolize_names: true)
+     
+      expect(parsed_json[:message]).to eq("your query could not be completed")
+      expect(parsed_json[:errors]).to be_an(Array)
     end
   end
 
