@@ -35,4 +35,44 @@ RSpec.describe Item, type: :model do
       expect(result.last).to eq(item3)
     end
   end
+
+  describe ".find_by_search" do
+    before :each do
+      @merchant = Merchant.create!(name: "Searchy Searcher")
+      @item1 = Item.create!(name: "Gold Ring", description: "Shiny", unit_price: 200, merchant: @merchant)
+      @item2 = Item.create!(name: "Silver Ring", description: "Less shiny", unit_price: 150, merchant: @merchant)
+      @item3 = Item.create!(name: "Wooden Spoon", description: "Not shiny", unit_price: 10, merchant: @merchant)
+    end
+
+    it "finds a single item by name fragment" do
+      result = Item.find_by_search({ name: "ring" })
+      expect(result).to eq(@item1)
+    end
+
+    it "find a single item by min and max price" do
+      result = Item.find_by_search({ min_price: "100", max_price: "200" })
+      expect(result).to eq(@item2) # Alphabetical sorting also
+    end
+
+    it "finds a single item by min price only" do
+      result = Item.find_by_search({ min_price: "160" })
+      expect(result).to eq(@item1)
+    end
+
+    it "finds a single item by max price only" do
+      result = Item.find_by_search({ max_price: "20" })
+      expect(result).to eq(@item3)
+    end
+  end
+
+  describe ".find_all_by_search" do
+    before :each do
+      @merchant = Merchant.create!(name: "Searchy Searcher")
+      @item1 = Item.create!(name: "Gold Ring", description: "Shiny", unit_price: 200, merchant: @merchant)
+      @item2 = Item.create!(name: "Silver Ring", description: "Less shiny", unit_price: 150, merchant: @merchant)
+      @item3 = Item.create!(name: "Wooden Spoon", description: "Not shiny", unit_price: 10, merchant: @merchant)
+    end
+
+    
+  end
 end
