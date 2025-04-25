@@ -21,7 +21,7 @@ RSpec.describe Coupon, type: :model do
 
       Coupon.create!(name: "Flash Sale Special", code: "FLASH5", value: 5.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
 
-      coupon = Coupon.create!(name: "Mega Monday", code: "MEGA25", value: 25.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+      coupon = Coupon.create(name: "Mega Monday", code: "MEGA25", value: 25.0, value_type: "percent", activated: true, merchant_id: merchant.id)
 
       coupon_two = Coupon.create(name: "VIP Exclusive", code: "VIP30", value: 30.0, value_type: "percent", activated: false, merchant_id: merchant.id)
 
