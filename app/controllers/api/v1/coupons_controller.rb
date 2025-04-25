@@ -8,9 +8,7 @@ class Api::V1::CouponsController < ApplicationController
 
   def show
     coupon = Coupon.find(params[:id])
-    render json: CouponSerializer.new(coupon)
-    #add count of how many invoices coupon is attached to
-    #will need different serializer to add count attribute 
+    render json: CouponWithCountSerializer.format_coupon(coupon)
   end
 
   def create

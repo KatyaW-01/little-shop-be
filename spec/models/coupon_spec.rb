@@ -4,6 +4,7 @@ require "spec_helper"
 RSpec.describe Coupon, type: :model do
   it {should belong_to :merchant}
   it {is_expected.to validate_presence_of :code}
+  it { should have_many :invoices }
   
   describe '#check_coupon_limit' do
     it 'will raise an error if a merchant has more than 5 activated coupons' do

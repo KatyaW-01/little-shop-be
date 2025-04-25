@@ -1,6 +1,8 @@
 class Coupon < ApplicationRecord
 
   belongs_to :merchant
+  has_many :invoices
+
   validates :code, presence: true, uniqueness: true
   validate :check_coupon_limit # could remove
   validate :check_coupon_count, on: :update
@@ -28,10 +30,6 @@ class Coupon < ApplicationRecord
 
   def check_pending_invoices
     #if there are pending invoices cannot change activated to false
-  end
-
-  def self.item_count
-    #count of how many invoices coupon is attached to
   end
 
 end
