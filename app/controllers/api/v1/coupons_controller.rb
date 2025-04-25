@@ -16,9 +16,10 @@ class Api::V1::CouponsController < ApplicationController
     render json: CouponSerializer.new(coupon)
   end
 
-  def update #this action not working
+  def update
     coupon = Coupon.find(params[:id])
     coupon.update!(activate_or_deactivate_params)
+    render json: CouponSerializer.new(coupon)
     #add sad path cannot deactivate if any pending invoices with coupon
   end
 

@@ -36,9 +36,11 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do 
       resources :merchants, only: [] do
-        resources :coupons, only: [:index,:show,:create,:update]
+        resources :coupons, only: [:index,:show,:create]
       end
     end
   end
+
+  patch "/api/v1/merchants/:merchant_id/coupons/:id", to: "api/v1/coupons#update"
  
 end
