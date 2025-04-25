@@ -33,6 +33,12 @@ Rails.application.routes.draw do
   get "/api/v1/merchants/:merchant_id/customers", to: "api/v1/merchants_customers#index"
 
   #Coupon Endpoints
-  
+  namespace :api do
+    namespace :v1 do 
+      resources :merchants, only: [] do
+        resources :coupons, only: [:index,:show,:create,:update]
+      end
+    end
+  end
  
 end
