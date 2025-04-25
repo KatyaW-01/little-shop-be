@@ -1,4 +1,5 @@
 class Invoice < ApplicationRecord
+  belongs_to :coupon, optional: true
   belongs_to :customer
   belongs_to :merchant
   has_many :invoice_items, dependent: :destroy
