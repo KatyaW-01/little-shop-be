@@ -7,7 +7,7 @@ class Coupon < ApplicationRecord
   validate :check_coupons_on_create, on: :create
 
   def check_coupon_limit
-    if activated? && Coupon.where(merchant_id: self.merchant_id, activated: true).count > 5
+    if activated? && Coupon.where(merchant_id: self.merchant_id, activated: true).count >= 5
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
   end
@@ -23,5 +23,5 @@ class Coupon < ApplicationRecord
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
   end
-  
+
 end
