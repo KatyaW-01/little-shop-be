@@ -36,7 +36,25 @@ RSpec.describe Coupon, type: :model do
   end
   describe '#check_coupon_count' do
     it 'will raise an error if coupon is updated to activated when count >=5' do
-      
+      merchant = Merchant.create!(name: "The Chocolate Farm")
+
+      Coupon.create!(name:"Spring Fling Sale", code: "SPRING20", value: 20.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+
+      Coupon.create!(name:"Ten Dollar Treat", code: "TREAT10", value: 10.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
+
+      Coupon.create!(name:"Welcome Deal", code: "WELCOME15", value: 15.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+
+      Coupon.create!(name: "Buy One Get One Half Off", code: "BOGO50", value: 50.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+
+      Coupon.create!(name: "Flash Sale Special", code: "FLASH5", value: 5.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
+
+      coupon = Coupon.create(name: "Happy Hour Discount", code: "HAPPY7", value: 7.0, value_type: "dollar", activated: false, merchant_id: merchant.id)
+
+      result = coupon.update(activated: true)
+
+      expect(result).to be(false)
+      expect(coupon.valid?).to be(false)
+      expect(coupon.errors[:activated]).to include("You have reached the maximum number of activated coupons")
     end
   end
 end
