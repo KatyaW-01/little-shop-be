@@ -9,8 +9,8 @@ class Api::V1::CouponsController < ApplicationController
   def show
     coupon = Coupon.find(params[:id])
     render json: CouponSerializer.new(coupon)
-    #add a count of how many times it has been used
-    # count will be how many invoices the coupon is attached to
+    #add count of how many invoices coupon is attached to
+    #will need different serializer to add count attribute 
   end
 
   def create
@@ -18,7 +18,7 @@ class Api::V1::CouponsController < ApplicationController
     render json: CouponSerializer.new(coupon)
   end
 
-  def update
+  def update #this action not working
     coupon = Coupon.find(params[:id])
     coupon.update!(activate_or_deactivate_params)
     #add sad path cannot deactivate if any pending invoices with coupon
@@ -30,7 +30,7 @@ class Api::V1::CouponsController < ApplicationController
     params.require(:coupon).permit(:name, :code, :value, :value_type, :activated, :merchant_id)
   end
 
-  def acactivate_or_deactivate_params
+  def activate_or_deactivate_params
     params.require(:coupon).permit(:activated)
   end
 
