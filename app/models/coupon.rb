@@ -13,7 +13,7 @@ class Coupon < ApplicationRecord
   #checks if activated is true and if the count is greater than 5 
 
   def check_coupon_count #accounts for updating the activated column to true 
-    if will_save_change_to_activated? && activated? && Coupon.where(merchant_id: self.merchant_id, activated: true).count > 5
+    if will_save_change_to_activated? && activated? && Coupon.where(merchant_id: self.merchant_id, activated: true).count >= 5
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
   end

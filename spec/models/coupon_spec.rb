@@ -34,4 +34,9 @@ RSpec.describe Coupon, type: :model do
       expect(coupon_three.valid?).to eq(true)
     end
   end
+  describe '#check_coupon_count' do
+    it 'will raise an error if coupon is updated to activated when count >=5' do
+      
+    end
+  end
 end
