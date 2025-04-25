@@ -4,6 +4,7 @@ require "spec_helper"
 RSpec.describe Merchant, type: :model do
   it { should have_many(:items).dependent(:destroy) }
   it { should have_many(:invoices).dependent(:destroy) }
+  it { is_expected.to validate_presence_of :name}
 
   describe 'dependent destroy' do
     it 'destroys associated items when merchant is deleted' do
