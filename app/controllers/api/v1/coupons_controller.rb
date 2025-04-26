@@ -12,7 +12,8 @@ class Api::V1::CouponsController < ApplicationController
   end
 
   def create
-    coupon = Coupon.create!(coupon_params)
+    merchant = Merchant.find(params[:merchant_id])
+    coupon = merchant.coupons.create!(coupon_params)
     render json: CouponSerializer.new(coupon)
   end
 
@@ -26,7 +27,7 @@ class Api::V1::CouponsController < ApplicationController
   private
 
   def coupon_params
-    params.require(:coupon).permit(:name, :code, :value, :value_type, :activated, :merchant_id)
+    params.require(:coupon).permit(:name, :code, :value, :value_type, :activated)
   end
 
   def activate_or_deactivate_params

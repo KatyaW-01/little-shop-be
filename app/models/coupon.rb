@@ -21,6 +21,7 @@ class Coupon < ApplicationRecord
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
   end
+  #will_save_change_to_activated? checks activated before it is saved
 
   def check_coupons_on_create
     if self[:activated] && Coupon.where(merchant_id: self.merchant_id, activated: true).count >= 5
