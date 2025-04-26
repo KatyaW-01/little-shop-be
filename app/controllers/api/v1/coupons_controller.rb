@@ -1,9 +1,19 @@
 class Api::V1::CouponsController < ApplicationController
 
   def index
-    merchant = Merchant.find(params[:merchant_id])
-    coupons = merchant.coupons
-    render json: CouponSerializer.new(coupons)
+    if params[:status] == "active"
+      merchant = Merchant.find(params[:merchant_id])
+      coupons = merchant.return_active_coupons
+      render json: CouponSerializer.new(coupons)
+    elsif params[:status] == "inactive"
+      merchant = Merchant.find(params[:merchant_id])
+      coupons = merchant.return_inactive_coupons
+      render json: CouponSerializer.new(coupons)
+    else
+      merchant = Merchant.find(params[:merchant_id])
+      coupons = merchant.coupons
+      render json: CouponSerializer.new(coupons)
+    end
   end
 
   def show

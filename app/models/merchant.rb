@@ -4,6 +4,14 @@ class Merchant < ApplicationRecord
   has_many :invoices, dependent: :destroy
   validates :name, presence: true
 
+  def return_active_coupons
+    coupons.where("activated = true")
+  end
+
+  def return_inactive_coupons
+    coupons.where("activated = false")
+  end
+
   def self.sorted_by_newest
     order(created_at: :desc)
   end

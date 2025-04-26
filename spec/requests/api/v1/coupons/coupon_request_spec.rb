@@ -155,4 +155,90 @@ RSpec.describe "Coupon API", type: :request do
       expect(coupon.activated).to_not eq(attributes[:activated])
     end
   end
+  describe 'GET merchants/:merchant_id/coupons?status=active' do
+    it 'can filter coupons by active status' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
+
+      Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+      
+      get "/api/v1/merchants/#{merchant.id}/coupons?status=active"
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      
+      data = json[:data]
+    
+      expect(data).to be_an(Array)
+      expect(data.count).to eq(2)
+      expect(data[0][:attributes][:name]).to eq("Ten Dollar Treat")
+      expect(data[0][:attributes][:activated]).to eq(true)
+      expect(data[1][:attributes][:name]).to eq("Welcome Deal")
+      expect(data[1][:attributes][:activated]).to eq(true)
+    end
+  end
+  describe 'GET merchants/:merchant_id/coupons?status=inactive' do
+    it 'can filter coupons by inactive status' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
+
+      Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+      
+      get "/api/v1/merchants/#{merchant.id}/coupons?status=inactive"
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      
+      data = json[:data]
+    
+      expect(data).to be_an(Array)
+      expect(data.count).to eq(1)
+      expect(data[0][:attributes][:name]).to eq("Spring Fling Sale")
+      expect(data[0][:attributes][:activated]).to eq(false)
+    end
+  end
 end

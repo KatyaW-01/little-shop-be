@@ -37,5 +37,4 @@ class Coupon < ApplicationRecord
     end
   end
   #activated_change_to_be_saved == [true, false] checks if the attribute will be changed from true to false 
-
 end

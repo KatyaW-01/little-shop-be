@@ -115,7 +115,75 @@ RSpec.describe Merchant, type: :model do
       expect(results).to eq(3)
       expect(merchant1.items.size).to eq(3)
       expect(results).to eq(merchant1.items.size)
+    end
+  end
+  describe '#return_active_coupons' do
+    it 'will return all active coupons for a merchant' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
 
+      coupon_one = Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
+
+      coupon_two = Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      coupon_three = Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+      
+      result = merchant.return_active_coupons
+      
+      expect(result.count).to eq(2)
+      expect(result.first).to eq(coupon_two)
+      expect(result.last).to eq(coupon_three)
+    end
+  end
+  describe '#return_inactive_coupons' do
+    it 'will return all inactive coupons for a merchant' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
+
+      coupon_one = Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
+
+      coupon_two = Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      coupon_three = Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+      
+      result = merchant.return_inactive_coupons
+
+      expect(result.count).to eq(1)
+      expect(result.first).to eq(coupon_one)
     end
   end
 end
