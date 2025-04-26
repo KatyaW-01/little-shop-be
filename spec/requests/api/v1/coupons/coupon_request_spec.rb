@@ -390,9 +390,35 @@ RSpec.describe "Coupon API", type: :request do
       }
 
       expect(response).to_not be_successful
+      data = JSON.parse(response.body, symbolize_names: true)
+
       expect(data[:message]).to eq("your query could not be completed")
       expect(data[:errors]).to be_a(Array)
       expect(data[:errors]).to include("Validation failed: Activated You have reached the maximum number of activated coupons")
+    end
+    it 'will gracefully handle deactivating a coupon if there are pending invoices' do
+      merchant = Merchant.create!(name: "Johnson Inc")
+
+      coupon = Coupon.create!(name: "Flash Sale Special", code: "FLASH5", value: 5.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
+
+      customer = Customer.create!(first_name: "Mark", last_name: "Twain")
+
+      Invoice.create!(customer_id: customer.id, merchant_id: merchant.id, status: "packaged", coupon_id: coupon.id)
+
+      Invoice.create!(customer_id: customer.id, merchant_id: merchant.id, status: "shipped", coupon_id: coupon.id)
+
+      patch "/api/v1/merchants/#{merchant.id}/coupons/#{coupon.id}", params: {
+        coupon: {
+          activated: false
+        }
+      }
+
+      expect(response).to_not be_successful
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:message]).to eq("your query could not be completed")
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors]).to include("Validation failed: Activated Invoices pending, coupon cannot be deactivated")
     end
   end
 end
