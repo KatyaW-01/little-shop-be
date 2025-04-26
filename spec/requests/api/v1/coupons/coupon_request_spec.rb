@@ -272,5 +272,65 @@ RSpec.describe "Coupon API", type: :request do
       expect(data[:errors]).to be_a(Array)
       expect(data[:errors]).to include("Validation failed: Code has already been taken")
     end
+    it 'will gracefully handle if a merchant already has 5 active coupons' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
+
+      Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name: "Buy One Get One Half Off", 
+        code: "BOGO50", 
+        value: 50.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      Coupon.create!(
+        name: "Flash Sale Special", 
+        code: "FLASH5", 
+        value: 5.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      coupon_params = {
+      name: "Summer Discount", 
+      code: "SUMMER10", 
+      value: 10.0, 
+      value_type: "percent", 
+      activated: true, 
+      merchant_id: merchant.id}
+
+      post api_v1_merchant_coupons_path(merchant.id), params: {coupon: coupon_params}
+
+      expect(response).to_not be_successful
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:message]).to eq("your query could not be completed")
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors]).to include("Validation failed: Activated You have reached the maximum number of activated coupons")
+    end
   end
 end
