@@ -420,5 +420,16 @@ RSpec.describe "Coupon API", type: :request do
       expect(data[:errors]).to be_a(Array)
       expect(data[:errors]).to include("Validation failed: Activated Invoices pending, coupon cannot be deactivated")
     end
+    it 'will gracefully handle an merchant id that doesnt exist' do
+      get "/api/v1/merchants/555555/coupons"
+
+      expect(response).to_not be_successful
+      expect(response.status).to eq(404)
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:message]).to eq("your query could not be completed")
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors]).to include("Couldn't find Merchant with 'id'=555555")
+    end
   end
 end

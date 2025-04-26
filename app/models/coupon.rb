@@ -2,7 +2,7 @@ class Coupon < ApplicationRecord
 
   belongs_to :merchant
   has_many :invoices
-
+  #can I validate that patch can only be true or false?
   validates :code, presence: true, uniqueness: true
   validate :check_coupon_limit 
   validate :check_coupon_count, on: :update
