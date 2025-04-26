@@ -59,4 +59,35 @@ RSpec.describe "Coupon API", type: :request do
       expect(attributes[:merchant_id]).to eq(merchant.id)
     end
   end
+  describe 'POST /api/v1/merchants/:merchant_id/coupons' do
+    it 'can create a coupon for a merchant' do
+      merchant = Merchant.create!(name: "Johnson Inc")
+
+      coupon_params = {
+        name: "Buy One Get One Half Off", 
+        code: "BOGO50", 
+        value: 50.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id
+      }
+
+      post api_v1_merchant_coupons_path(merchant.id), params: {coupon: coupon_params}
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      coupon = json[:data]
+      attributes = coupon[:attributes]
+
+      expect(coupon).to be_a(Hash)
+      expect(attributes[:name]).to eq("Buy One Get One Half Off")
+      expect(attributes[:code]).to eq("BOGO50")
+      expect(attributes[:value]).to eq(50.0)
+      expect(attributes[:value_type]).to eq("percent")
+      expect(attributes[:activated]).to eq(true)
+      expect(attributes[:merchant_id]).to eq(merchant.id)
+    end
+  end
 end
