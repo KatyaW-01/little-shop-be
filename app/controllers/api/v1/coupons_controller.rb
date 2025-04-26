@@ -1,4 +1,5 @@
 class Api::V1::CouponsController < ApplicationController
+  rescue_from  ActiveRecord::RecordInvalid, with: :invalid_response
 
   def index
     if params[:status] == "active"
@@ -41,6 +42,10 @@ class Api::V1::CouponsController < ApplicationController
 
   def activate_or_deactivate_params
     params.require(:coupon).permit(:activated)
+  end
+
+  def invalid_response(exception)
+    render json: ErrorSerializer.serialize(exception), status: :bad_request
   end
 
 end

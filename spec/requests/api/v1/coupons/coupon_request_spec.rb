@@ -241,4 +241,36 @@ RSpec.describe "Coupon API", type: :request do
       expect(data[0][:attributes][:activated]).to eq(false)
     end
   end
+  describe 'sad paths and edge cases' do
+    it 'will gracefully handle if a coupon code is not unique' do
+      merchant = Merchant.create!(name: "Johnson Inc")
+
+      Coupon.create(
+        name:"Welcome Deal", 
+        code: "BOGO50", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id
+      )
+
+      coupon_params = {
+        name: "Buy One Get One Half Off", 
+        code: "BOGO50", 
+        value: 50.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id
+      }
+
+      post api_v1_merchant_coupons_path(merchant.id), params: {coupon: coupon_params}
+
+      expect(response).to_not be_successful
+      data = JSON.parse(response.body, symbolize_names: true)
+
+      expect(data[:message]).to eq("your query could not be completed")
+      expect(data[:errors]).to be_a(Array)
+      expect(data[:errors]).to include("Validation failed: Code has already been taken")
+    end
+  end
 end
