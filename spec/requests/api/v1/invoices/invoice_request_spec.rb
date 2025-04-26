@@ -2,7 +2,25 @@ require "rails_helper"
 
 RSpec.describe "Invoice endpoints", type: :request do
   describe 'index' do
-    it 'it returns all invoices for given merchant by its status' do
+    it 'returns all invoices for a merchant' do
+      merchant = Merchant.create!(name: "Test Merchant")
+      customer = Customer.create!(first_name: "Lulu", last_name: "Customer")
+      Invoice.create!(status: "shipped", customer_id: customer.id, merchant_id: merchant.id)
+      Invoice.create!(status: "packaged", customer_id: customer.id, merchant_id: merchant.id)
+
+      get "/api/v1/merchants/#{merchant.id}/invoices"
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+      data = json[:data]
+
+      expect(data).to be_an(Array)
+      expect(data.count).to eq(2)
+      expect(data[0][:attributes][:status]).to eq("shipped")
+      expect(data[1][:attributes][:status]).to eq("packaged")
+    end
+    it 'returns all invoices for given merchant by its status' do
       merchant = Merchant.create!(name: "Test Merchant")
       customer = Customer.create!(first_name: "Lulu", last_name: "Customer")
       shipped_invoice = Invoice.create!(status: "shipped", customer_id: customer.id, merchant_id: merchant.id)
