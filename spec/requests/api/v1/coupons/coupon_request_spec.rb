@@ -35,4 +35,28 @@ RSpec.describe "Coupon API", type: :request do
       expect(attributes[:merchant_id]).to eq(merchant.id)
     end
   end
+  describe 'Get /api/v1/merchants/:merchant_id/coupons/:id' do
+    it 'can fetch a single coupon' do
+      merchant = Merchant.create!(name: "Strawberry Fields")
+
+      coupon = Coupon.create!(name:"Spring Fling Sale", code: "SPRING20", value: 20.0, value_type: "percent", activated: false, merchant_id: merchant.id)
+
+      get api_v1_merchant_coupon_path(merchant.id,coupon.id)
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      coupons = json[:data]
+      attributes = coupons[:attributes]
+
+      expect(coupons).to be_a(Hash)
+      expect(attributes[:name]).to eq("Spring Fling Sale")
+      expect(attributes[:code]).to eq("SPRING20")
+      expect(attributes[:value]).to eq(20.0)
+      expect(attributes[:value_type]).to eq("percent")
+      expect(attributes[:activated]).to eq(false)
+      expect(attributes[:merchant_id]).to eq(merchant.id)
+    end
+  end
 end

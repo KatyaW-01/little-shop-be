@@ -58,7 +58,7 @@ RSpec.describe Coupon, type: :model do
       expect(coupon.errors[:activated]).to include("You have reached the maximum number of activated coupons")
     end
   end
-  describe '#check_coupon_count' do
+  describe '#check_coupons_on_create' do
     it 'will raise an error if creating an active coupon when count >= 5' do
       merchant = Merchant.create!(name: "Johnson Inc")
 

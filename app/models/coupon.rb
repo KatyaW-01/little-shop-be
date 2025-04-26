@@ -4,13 +4,13 @@ class Coupon < ApplicationRecord
   has_many :invoices
 
   validates :code, presence: true, uniqueness: true
-  validate :check_coupon_limit # could remove
+  validate :check_coupon_limit 
   validate :check_coupon_count, on: :update
   validate :check_coupons_on_create, on: :create
 
-  validate :check_pending_invoices, on: :update
+  # validate :check_pending_invoices, on: :update
 
-  def check_coupon_limit #might not be necessary, could remove
+  def check_coupon_limit 
     if activated? && Coupon.where(merchant_id: self.merchant_id, activated: true).count >= 5
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
@@ -29,8 +29,8 @@ class Coupon < ApplicationRecord
     end
   end
 
-  def check_pending_invoices
-    #if there are pending invoices cannot change activated to false
-  end
+  # def check_pending_invoices
+  #   #if there are pending invoices cannot change activated to false
+  # end
 
 end
