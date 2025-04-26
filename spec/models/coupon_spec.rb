@@ -87,4 +87,23 @@ RSpec.describe Coupon, type: :model do
       expect(coupon_three.valid?).to eq(true)
     end
   end
+  describe '#check_pending_invoices' do
+    it 'will raise an error if deactivating a coupon with a pending invoice' do
+      merchant = Merchant.create!(name: "Johnson Inc")
+
+      coupon = Coupon.create!(name: "Flash Sale Special", code: "FLASH5", value: 5.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
+
+      customer = Customer.create!(first_name: "Mark", last_name: "Twain")
+
+      Invoice.create!(customer_id: customer.id, merchant_id: merchant.id, status: "packaged", coupon_id: coupon.id)
+
+      Invoice.create!(customer_id: customer.id, merchant_id: merchant.id, status: "shipped", coupon_id: coupon.id)
+
+      result = coupon.update(activated: false)
+
+      expect(result).to be(false) #the coupon did not update
+      expect(coupon.valid?).to be(false)
+      expect(coupon.errors[:activated]).to include("Invoices pending, coupon cannot be deactivated")
+    end
+  end
 end

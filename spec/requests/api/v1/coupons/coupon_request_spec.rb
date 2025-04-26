@@ -6,15 +6,45 @@ RSpec.describe "Coupon API", type: :request do
       merchant = Merchant.create!(name: "Strawberry Fields")
       merchant_two = Merchant.create!(name: "Johnson Inc")
 
-      Coupon.create!(name:"Spring Fling Sale", code: "SPRING20", value: 20.0, value_type: "percent", activated: false, merchant_id: merchant.id)
+      Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
 
-      Coupon.create!(name:"Ten Dollar Treat", code: "TREAT10", value: 10.0, value_type: "dollar", activated: true, merchant_id: merchant.id)
+      Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
 
-      Coupon.create!(name:"Welcome Deal", code: "WELCOME15", value: 15.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+      Coupon.create!(
+        name:"Welcome Deal", 
+        code: "WELCOME15", 
+        value: 15.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
 
-      Coupon.create!(name: "Buy One Get One Half Off", code: "BOGO50", value: 50.0, value_type: "percent", activated: true, merchant_id: merchant.id)
+      Coupon.create!(
+        name: "Buy One Get One Half Off", 
+        code: "BOGO50", 
+        value: 50.0, 
+        value_type: "percent", 
+        activated: true, 
+        merchant_id: merchant.id)
 
-      Coupon.create!(name: "Flash Sale Special", code: "FLASH5", value: 5.0, value_type: "dollar", activated: true, merchant_id: merchant_two.id)
+      Coupon.create!(
+        name: "Flash Sale Special", 
+        code: "FLASH5", 
+        value: 5.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant_two.id)
 
       get api_v1_merchant_coupons_path(merchant.id)
 
@@ -35,11 +65,17 @@ RSpec.describe "Coupon API", type: :request do
       expect(attributes[:merchant_id]).to eq(merchant.id)
     end
   end
-  describe 'Get /api/v1/merchants/:merchant_id/coupons/:id' do
+  describe 'GET /api/v1/merchants/:merchant_id/coupons/:id' do
     it 'can fetch a single coupon' do
       merchant = Merchant.create!(name: "Strawberry Fields")
 
-      coupon = Coupon.create!(name:"Spring Fling Sale", code: "SPRING20", value: 20.0, value_type: "percent", activated: false, merchant_id: merchant.id)
+      coupon = Coupon.create!(
+        name:"Spring Fling Sale", 
+        code: "SPRING20", 
+        value: 20.0, 
+        value_type: "percent", 
+        activated: false, 
+        merchant_id: merchant.id)
 
       get api_v1_merchant_coupon_path(merchant.id,coupon.id)
 
@@ -88,6 +124,35 @@ RSpec.describe "Coupon API", type: :request do
       expect(attributes[:value_type]).to eq("percent")
       expect(attributes[:activated]).to eq(true)
       expect(attributes[:merchant_id]).to eq(merchant.id)
+    end
+  end
+  describe 'PATCH /api/v1/merchants/:merchant_id/coupons/:id' do
+    it 'can activate or deactivate a coupon' do
+      merchant = Merchant.create!(name: "Target")
+
+      coupon = Coupon.create!(
+        name:"Ten Dollar Treat", 
+        code: "TREAT10", 
+        value: 10.0, 
+        value_type: "dollar", 
+        activated: true, 
+        merchant_id: merchant.id)
+
+      patch "/api/v1/merchants/#{merchant.id}/coupons/#{coupon.id}", params: {
+        coupon: {
+          activated: false
+        }
+      }
+
+      expect(response).to be_successful
+
+      json = JSON.parse(response.body, symbolize_names: true)
+
+      coupon_data = json[:data]
+      attributes = coupon_data[:attributes]
+
+      expect(attributes[:activated]).to eq(false)
+      expect(coupon.activated).to_not eq(attributes[:activated])
     end
   end
 end
