@@ -1,19 +1,24 @@
 class Api::V1::InvoicesController < ApplicationController
   rescue_from  ActiveRecord::RecordNotFound, with: :incomplete_response
-  VALID_STATUSES = ["shipped", "returned", "packaged"]
-
   rescue_from InvalidStatusError, with: :invalid_status_error
 
+  VALID_STATUSES = ["shipped", "returned", "packaged"]
+
   def index
-    status = params[:status] #grabs the value of the status query parameter - shipped, packaged, returned
+    status = params[:status] 
 
-    raise InvalidStatusError, "Invalid status." if status.present? && !VALID_STATUSES.include?(status)
+    if status.present? && !VALID_STATUSES.include?(status)
+      raise InvalidStatusError, "Invalid status."
+    end
 
-    merchant = Merchant.find(params[:merchant_id]) #looks up merchant with given merchant id frome the URL
-    invoices = merchant.invoices #this will get all the merchants invoices
-    invoices = merchant.invoices.where(status: status) if status.present?#this will get all the merchants invoices that match the status being passed in
-
-    render json: InvoiceSerializer.new(invoices)
+    merchant = Merchant.find(params[:merchant_id]) 
+    if status.present?
+      invoices = merchant.filter_by_status(status)
+      render json: InvoiceSerializer.new(invoices)
+    else
+      invoices = merchant.invoices 
+      render json: InvoiceSerializer.new(invoices)
+    end
 
   end
   private

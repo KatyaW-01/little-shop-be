@@ -186,4 +186,17 @@ RSpec.describe Merchant, type: :model do
       expect(result.first).to eq(coupon_one)
     end
   end
+  describe "#filter_by_status" do 
+    it 'will return all the invoices with a specific status' do
+      merchant = Merchant.create!(name: "Test Merchant")
+      customer = Customer.create!(first_name: "Lulu", last_name: "Customer")
+      shipped_invoice = Invoice.create!(status: "shipped", customer_id: customer.id, merchant_id: merchant.id)
+      packaged_invoice = Invoice.create!(status: "packaged", customer_id: customer.id, merchant_id: merchant.id)
+
+      results = merchant.filter_by_status("shipped")
+
+      expect(results.count).to eq(1)
+      expect(results.first).to eq(shipped_invoice)
+    end
+  end
 end

@@ -37,4 +37,8 @@ class Merchant < ApplicationRecord
     where("LOWER(name) LIKE?", "%#{name.downcase}%").order("LOWER(name) ASC").first
   end
 
+  def filter_by_status(status)
+    invoices.where(status: status)
+  end
+
 end
