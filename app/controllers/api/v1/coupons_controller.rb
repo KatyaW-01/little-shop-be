@@ -8,7 +8,7 @@ class Api::V1::CouponsController < ApplicationController
 
   def show
     coupon = Coupon.find(params[:id])
-    render json: CouponWithCountSerializer.format_coupon(coupon)
+    render json: CouponWithCountSerializer.new(coupon)
   end
 
   def create
