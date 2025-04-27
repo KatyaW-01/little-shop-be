@@ -2,7 +2,7 @@ class Coupon < ApplicationRecord
 
   belongs_to :merchant
   has_many :invoices
-  #can I validate that patch can only be true or false?
+
   validates :code, presence: true, uniqueness: true
   validate :check_coupon_limit 
   validate :check_coupon_count, on: :update
@@ -37,4 +37,6 @@ class Coupon < ApplicationRecord
     end
   end
   #activated_change_to_be_saved == [true, false] checks if the attribute will be changed from true to false 
+
+
 end
