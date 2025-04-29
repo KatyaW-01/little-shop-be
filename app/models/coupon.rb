@@ -20,7 +20,6 @@ class Coupon < ApplicationRecord
       errors.add(:activated, "You have reached the maximum number of activated coupons")
     end
   end
-  #will_save_change_to_activated? checks if the activated attribute will be changing
 
   def check_coupons_on_create
     if self[:activated] && Coupon.where(merchant_id: self.merchant_id, activated: true).count >= 5
@@ -32,11 +31,9 @@ class Coupon < ApplicationRecord
     self.invoices.each do |invoice|
       if invoice.status == 'packaged' && activated_change_to_be_saved == [true, false]
         errors.add(:activated, "Invoices pending, coupon cannot be deactivated")
-        break #won't continue the loop if an error is raised 
+        break 
       end
     end
   end
-  #activated_change_to_be_saved == [true, false] checks if the attribute will be changed from true to false 
-
 
 end
